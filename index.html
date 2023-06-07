@@ -26,6 +26,7 @@
             border: none;
         }
     </style>
+    <script async src="https://cse.google.com/cse.js?cx=625648ad3a4fb4dbf"></script>
 </head>
 <body>
     <header>
@@ -59,40 +60,34 @@
             var userInput = document.getElementById("searchInput").value;
             var selectedBrowser = document.getElementById("browserSelect").value;
 
-            var isURL = userInput.startsWith("http://") || userInput.startsWith("https://");
-
-            if (isURL) {
-                // Redirect to the entered URL
-                window.location.href = userInput;
+            if (selectedBrowser === "google") {
+                // Perform search using Google CSE
+                var searchBox = document.querySelector(".gsc-input");
+                searchBox.value = userInput;
+                searchBox.parentElement.submit();
             } else {
-                // Perform a search based on the entered question and selected browser
+                // Perform search using selected browser
                 searchQuestion(userInput, selectedBrowser);
             }
         }
 
         function searchQuestion(question, browser) {
-            var searchEngineURL;
+            var searchURL;
 
-            // Set the search engine URL based on the selected browser
             if (browser === "bing") {
-                searchEngineURL = "https://www.bing.com/search?q=";
+                searchURL = "https://www.bing.com/search?q=" + encodeURIComponent(question);
             } else if (browser === "duckduckgo") {
-                searchEngineURL = "https://duckduckgo.com/?q=";
+                searchURL = "https://duckduckgo.com/html/?q=" + encodeURIComponent(question);
             } else {
-                // Default to Google if no specific browser is selected
-                searchEngineURL = "https://www.google.com/search?q=";
+                searchURL = ""; // Add support for other search engines if desired
             }
 
-            // Encode the question to be included in the search URL
-            var encodedQuestion = encodeURIComponent(question);
-
-            // Create the search URL
-            var searchURL = searchEngineURL + encodedQuestion;
-
-            // Set the iframe source to the search URL
             var searchIframe = document.getElementById("searchIframe");
             searchIframe.src = searchURL;
         }
     </script>
 </body>
 </html>
+
+
+
