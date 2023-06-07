@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Form</title>
+    <style>
+        header {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header img {
+            width: 50px;
+            height: 50px;
+            margin-top: 10px;
+        }
+
+        #searchIframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="path/to/your/logo.png" alt="Logo">
+        <h1>Search Engine</h1>
+    </header>
+
+    <div id="searchContainer">
+        <form onsubmit="performSearch(event)">
+            <input type="text" id="searchInput" placeholder="Search" />
+            <input type="submit" value="Go" />
+
+            <select id="browserSelect">
+                <option value="google">Google</option>
+                <option value="bing">Bing</option>
+                <option value="duckduckgo">DuckDuckGo</option>
+            </select>
+        </form>
+    </div>
+
+    <iframe id="searchIframe"></iframe>
+
+    <div id="lastSearchContainer">
+        <h3>Last Search:</h3>
+        <p id="lastSearch"></p>
+    </div>
+
+    <script>
+        function performSearch(event) {
+            event.preventDefault();
+            var userInput = document.getElementById("searchInput").value;
+            var selectedBrowser = document.getElementById("browserSelect").value;
+
+            var isURL = userInput.startsWith("http://") || userInput.startsWith("https://");
+
+            if (isURL) {
+                // Redirect to the entered URL
+                window.location.href = userInput;
+            } else {
+                // Perform a search based on the entered question and selected browser
+                searchQuestion(userInput, selectedBrowser);
+            }
+        }
+
+        function searchQuestion(question, browser) {
+            var searchEngineURL;
+
+            // Set the search engine URL based on the selected browser
+            if (browser === "bing") {
+                searchEngineURL = "https://www.bing.com/search?q=";
+            } else if (browser === "duckduckgo") {
+                searchEngineURL = "https://duckduckgo.com/?q=";
+            } else {
+                // Default to Google if no specific browser is selected
+                searchEngineURL = "https://www.google.com/search?q=";
+            }
+
+            // Encode the question to be included in the search URL
+            var encodedQuestion = encodeURIComponent(question);
+
+            // Create the search URL
+            var searchURL = searchEngineURL + encodedQuestion;
+
+            // Set the iframe source to the search URL
+            var searchIframe = document.getElementById("searchIframe");
+            searchIframe.src = searchURL;
+        }
+    </script>
+</body>
+</html>
